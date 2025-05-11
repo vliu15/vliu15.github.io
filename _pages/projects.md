@@ -1,8 +1,8 @@
 ---
 layout: page
 title: research
-permalink: /projects/
-description: cool neural networks i've contributed to
+permalink: /research/
+description: cool neural networks i've made
 nav: true
 nav_order: 1
 display_categories: [work, fun]

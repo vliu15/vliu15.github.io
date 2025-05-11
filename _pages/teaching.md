@@ -1,6 +1,6 @@
 ---
 layout: page
-permalink: /courseworks/
+permalink: /teaching/
 title: teaching
 description: some of my academic material
 nav: true
