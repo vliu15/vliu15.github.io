@@ -16,7 +16,7 @@ papers: true # includes a list of papers marked as "selected={true}"
 social: true # includes social icons at the bottom of the page
 ---
 
-I'm currently a researcher in Professor [Lerrel Pinto](https://www.lerrelpinto.com/)'s group at NYU, where I work on zero-shot human-to-robot learning. You can follow my work and thoughts [on X](https://x.com/vincentjliu).
+I'm currently a researcher in Professor [Lerrel Pinto](https://www.lerrelpinto.com/)'s group at NYU, where I work on zero-shot human-to-robot learning. You can follow my work [on X](https://x.com/vincentjliu).
 
 I received my BA in Mathematics and MS in Computer Science from Stanford University, where I was advised by [Chris Manning](https://nlp.stanford.edu/~manning/). My MS Distinction in Research introduced new adversarial methods for speech generation, and I was invited to lecture on the topic for [CS 236G: Generative Adversarial Networks](https://cs236g.stanford.edu/).
 
