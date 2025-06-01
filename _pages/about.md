@@ -16,7 +16,6 @@ papers: true # includes a list of papers marked as "selected={true}"
 social: true # includes social icons at the bottom of the page
 ---
 
-
 I'm building a robotics company to scale robot learning from humans in the real world. In the process of proofing this, I recently first-authored foundational research on [zero-shot human-to-robot learning](https://egozero-robot.github.io/). I post about AI, robotics, and deep tech startups [on X](https://x.com/vincentjliu).
 
 I received my BA in Mathematics and MS in Computer Science from Stanford University. My past work in AI has touched both theoretical and applied topics in 3D world models, self-driving, speech generation, multi-task learning, self-supervised learning, computer vision, reinforcement learning, and natural language processing.
