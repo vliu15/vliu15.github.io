@@ -5,4 +5,4 @@ inline: true
 related_posts: false
 ---
 
-We submitted our zero-shot human-to-robot learning work to CoRL! Preprint soon 📝
+We released our research on zero-shot human-to-robot learning [EgoZero: Robot Learning from Smart Glasses](https://x.com/vincentjliu/status/1927392184241635650)!
