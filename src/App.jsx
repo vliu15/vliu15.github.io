@@ -50,7 +50,7 @@ const Layout = ({ children }) => (
 );
 
 const Home = () => {
-  const posts = getAllPosts();
+  const posts = getAllPosts().sort((a, b) => (b.order || 0) - (a.order || 0));
   return (
     <div className="space-y-20">
       <header className="items-center">

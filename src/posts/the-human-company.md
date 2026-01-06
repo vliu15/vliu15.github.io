@@ -1,6 +1,7 @@
 ---
 title: the human company
 date: June 2025
+order: 1
 author: Vincent Liu, Ademi Adeniji
 description: On the human-centric thesis for robotics
 unrelease: false
