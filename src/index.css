@@ -1,0 +1,81 @@
+@import "tailwindcss";
+
+@theme {
+  --font-serif: "Playfair Display", serif;
+  --font-sans: "Work Sans", sans-serif;
+  --color-theme-dark: #3B2F2F;
+  --color-theme-highlight: #2F6B4F;
+}
+
+/* Base Styles */
+* {
+  @apply bg-[#fbf9f7] text-theme-dark antialiased;
+}
+
+/* Layout & Containers */
+.app-container {
+  @apply max-w-3xl mx-auto px-6 py-20 min-h-screen font-sans;
+}
+
+.nav-brand {
+  @apply text-xl font-bold tracking-widest uppercase text-stone-300 hover:text-theme-dark no-underline;
+}
+
+.footer-section {
+  @apply mt-16 pt-8 border-t border-stone-100;
+}
+
+.copyright-text {
+  @apply text-stone-400 text-[10px] tracking-widest font-medium;
+}
+
+/* Typography & Links */
+.link-external {
+  @apply underline decoration-stone-300 underline-offset-2 decoration-1 hover:decoration-stone-700 ;
+}
+
+.metadata-text {
+  @apply text-xs !text-stone-500 font-light tracking-wider;
+}
+
+/* Components */
+.profile-image {
+  @apply w-28 h-28 rounded-full grayscale object-cover object-center flex-shrink-0 mb-4;
+}
+
+.post-entry-title {
+  @apply text-xl font-serif font-medium mb-2 decoration-stone-300 underline decoration-1 group-hover:decoration-stone-700 underline-offset-6;
+}
+
+.social-svg {
+  @apply w-6 h-6 text-stone-400 hover:text-theme-dark ;
+}
+
+/* Markdown Styling (Preserved exactly) */
+.prose { @apply text-theme-dark; line-height: 1.5; }
+.prose h1 { @apply text-[20pt] font-serif font-semibold mt-6 mb-4; }
+.prose h2 { @apply text-sm font-sans font-semibold mt-5 mb-3; }
+.prose p { @apply text-sm font-sans mb-4; }
+.prose a { @apply text-stone-500 underline underline-offset-4 hover:text-theme-dark ; color: var(--color-theme-highlight); }
+
+.prose figure { @apply flex flex-col items-center w-full; }
+.prose img { @apply block my-8 mx-auto max-w-full px-4; }
+.prose img + em { @apply block text-center mt-4 text-[#78716c] text-sm mx-auto; }
+
+/* Footnotes (Preserved exactly) */
+#footnote-label {
+  display: block !important;
+  visibility: visible !important;
+  @apply text-sm font-sans font-semibold mt-8 text-theme-dark;
+  height: auto;
+}
+
+.prose section[data-footnotes] ol { @apply list-none p-0 m-0; counter-reset: footnote-counter; }
+.prose section[data-footnotes] li {
+  @apply relative pl-5 mb-1 text-[10pt] text-stone-500 leading-snug;
+  counter-increment: footnote-counter;
+}
+.prose section[data-footnotes] li::before {
+  content: counter(footnote-counter);
+  @apply absolute left-0 top-0 font-sans font-medium text-theme-highlight text-[7pt];
+}
