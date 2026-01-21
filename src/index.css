@@ -93,3 +93,37 @@
   content: counter(footnote-counter);
   @apply absolute left-0 top-0 font-sans font-medium text-theme-highlight text-[7pt];
 }
+
+@media print {
+  /* Prevent the browser from overriding your colors */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Hide the entire footer section (icons, email, copyright) */
+  .footer-section {
+    display: none !important;
+  }
+
+  /* Remove the large top padding on the container */
+  .app-container {
+    padding-top: 1rem !important;
+    padding-bottom: 1rem !important;
+  }
+
+  /* Reduce the margin below the navigation arrow */
+  nav.mb-16 {
+    margin-bottom: 2rem !important;
+  }
+
+  /* Ensure the font colors are high-contrast for paper/ink */
+  * {
+    background: white !important;
+  }
+
+  /* Hide any social icons or footers you might not want on a PDF */
+  .footer-section {
+    border-top: none !important;
+  }
+}
