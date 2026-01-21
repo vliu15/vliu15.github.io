@@ -3,8 +3,8 @@ title: the robotics data pareto frontier
 date: January 2026
 order: 2
 author: Vincent Liu
-description: On the emergence of human-centric trends in robotics (part 1)
-unreleased: false
+description: On the emergence of human data in robotics (part 1)
+unreleased: true
 ---
 
 <figure id="fig-top">
