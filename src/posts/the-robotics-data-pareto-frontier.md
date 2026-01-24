@@ -4,7 +4,7 @@ date: January 2026
 order: 2
 author: Vincent Liu
 description: On the emergence of human data in robotics (part 1)
-unreleased: true
+unreleased: false
 ---
 
 <figure id="fig-top">

@@ -59,7 +59,7 @@ const Home = () => {
         <div>
           <h1 className="text-xl font-semibold font-serif tracking-wide mb-4">Vincent Liu</h1>
           <p className="text-sm mb-4">I'm a cofounder at <ExternalLink href="https://mecha.company">Mecha</ExternalLink>, a robotics startup focused on scaling robot learning from humans in the real world. I'm interested in creating and understanding the systems that support technology. In a past life, I was an <ExternalLink href="https://youtu.be/nvZtGpNVB0Y?si=2LtaTx5bsVWjvHlR">aspiring concert pianist</ExternalLink>.</p>
-          <p className="text-sm mb-4">I studied Mathematics at Stanford. As an undergraduate, I worked on <ExternalLink href="https://www.tesla.com/fsd">Andrej Karpathy's AI Team</ExternalLink> at Tesla and helped create <ExternalLink href="https://cs236g.stanford.edu">Stanford's graduate-level GANs class</ExternalLink>. My prior research in AI spans robotics, 3D, speech, NLP, computer vision, reinforcement learning, and self-supervised learning.</p>
+          <p className="text-sm mb-4">I studied Mathematics at Stanford. As an undergraduate, I was on <ExternalLink href="https://www.tesla.com/fsd">Andrej Karpathy's AI Team</ExternalLink> at Tesla and helped create <ExternalLink href="https://cs236g.stanford.edu">Stanford's graduate-level GANs class</ExternalLink>. I was a founding researcher at Common Sense Machines, which was later acquired by Google DeepMind. My prior research in AI spans robotics, 3D, speech, NLP, computer vision, reinforcement learning, and self-supervised learning.</p>
         </div>
       </header>
       <section>
