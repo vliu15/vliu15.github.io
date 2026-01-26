@@ -1,9 +1,8 @@
-import { BrowserRouter, Routes, Route, Link, useParams, useLocation } from 'react-router-dom';
-import { useEffect } from 'react';
-import ReactMarkdown from 'react-markdown';
-import rehypeRaw from 'rehype-raw';
-import remarkGfm from 'remark-gfm';
+import { BrowserRouter, Routes, Route, Link, useLocation } from 'react-router-dom';
+import { useEffect, lazy, Suspense } from 'react';
 import { getAllPosts } from './loader';
+
+const Post = lazy(() => import('./Post'));
 
 const RedirectHandler = () => {
   const location = useLocation();
@@ -29,6 +28,7 @@ const Layout = ({ children }) => (
     <main>{children}</main>
     <footer className="footer-section">
       <div className="flex gap-4 mb-4">
+        {/* Your social links remain unchanged */}
         <ExternalLink href="https://twitter.com/vincentjliu" className="decoration-transparent">
           <svg className="social-svg" fill="currentColor" viewBox="0 0 24 24">
             <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
@@ -51,7 +51,10 @@ const Layout = ({ children }) => (
 );
 
 const Home = () => {
+  // 3. This continues to work perfectly because your new loader.js
+  // eagerly loads the metadata (title, date, description) for this page.
   const posts = getAllPosts().sort((a, b) => (b.order || 0) - (a.order || 0));
+  
   return (
     <div className="space-y-20">
       <header className="items-center">
@@ -67,12 +70,10 @@ const Home = () => {
           {posts.map((post) => (
             <div key={post.slug} className="flex flex-col">
               {post.unreleased ? (
-                /* Unreleased: No Link, No Underline */
                 <h3 className="text-xl font-serif font-medium mb-2 text-stone-400">
                   {post.title}
                 </h3>
               ) : (
-                /* Released: Interactive Link */
                 <Link to={`/${post.slug}`} className="w-fit group no-underline">
                   <h3 className="post-entry-title">{post.title}</h3>
                 </Link>
@@ -89,63 +90,18 @@ const Home = () => {
   );
 };
 
-const Post = () => {
-  const { slug } = useParams();
-  const post = getAllPosts().find(p => p.slug === slug);
-
-  if (!post || post.unreleased) {
-    return <div className="py-20">Post not found.</div>;
-  }
-  const authors = post.author ? post.author.split(',').map(s => s.trim()) : ["Vincent Liu"];
-
-  return (
-    <article className="animate-in fade-in duration-700">
-      <header className="mb-12 border-b border-stone-100 pb-8">
-        <h1 className="text-2xl font-serif font-semibold leading-tight tracking-wide mb-4">{post.title}</h1>
-        <div className="flex-wrap items-center gap-x-4 gap-y-2 text-stone-400">
-          <div className="items-center gap-2 mb-2">
-            <div className="gap-2">
-              {authors.map((name, index) => (
-                <span key={name} className="!text-stone-600 !text-xs">
-                  {name}{index < authors.length - 1 ? ", " : ""}
-                </span>
-              ))}
-            </div>
-          </div>
-          <span className="metadata-text !text-stone-600 !text-xs">{post.date}</span>
-        </div>
-      </header>
-      <div className="prose font-serif">
-        <ReactMarkdown 
-          remarkPlugins={[remarkGfm]}
-          rehypePlugins={[rehypeRaw]}
-          components={{
-            // We let the CSS handle the margins, so we just ensure images are responsive
-            img: ({node, ...props}) => (
-              <img {...props} style={{ maxWidth: '100%', height: 'auto' }} />
-            ),
-            h2: ({node, ...props}) => {
-              if (props.id === 'footnote-label') return <h2 {...props}>Footnotes.</h2>;
-              return <h2 {...props} />;
-            }
-          }}
-        >
-          {post.content}
-        </ReactMarkdown>
-      </div>
-    </article>
-  );
-};
-
 export default function App() {
   return (
     <BrowserRouter>
       <RedirectHandler />
       <Layout>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/:slug" element={<Post />} />
-        </Routes>
+        {/* 4. Suspense ensures the app doesn't crash while fetching 'Post.jsx' */}
+        <Suspense fallback={<div className="py-20 text-center text-stone-500">Loading...</div>}>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/:slug" element={<Post />} />
+          </Routes>
+        </Suspense>
       </Layout>
     </BrowserRouter>
   );
