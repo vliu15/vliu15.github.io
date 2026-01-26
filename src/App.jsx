@@ -24,7 +24,7 @@ const ExternalLink = ({ href, children, className = "" }) => (
 const Layout = ({ children }) => (
   <div className="app-container">
     <nav className="mb-16">
-      <Link to="/" className="nav-brand">«</Link>
+      <Link to="/" className="nav-brand" title="home" aria-label="home">«</Link>
     </nav>
     <main>{children}</main>
     <footer className="footer-section">
