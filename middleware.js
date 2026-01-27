@@ -31,6 +31,7 @@ export default async function middleware(req) {
   // Defaults
   let finalTitle = 'Vincent Liu';
   let finalThumbnail = 'https://vliu15.github.io/logo.png'; // Ensure this default image exists!
+  let finalDescription = 'Vincent Liu\'s Personal Website.';
 
   if (slug) {
     // --- Title Logic ---
@@ -47,7 +48,7 @@ export default async function middleware(req) {
 
     // --- New Description Logic ---
     if (customDescriptions[slug]) {
-      finalDescription = customDescriptions[slug];
+      const rawDesc = customDescriptions[slug];
       finalDescription = rawDesc.length > 160 
             ? rawDesc.slice(0, 157) + '...' 
             : rawDesc;
