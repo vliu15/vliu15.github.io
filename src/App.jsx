@@ -4,6 +4,28 @@ import { getAllPosts } from './loader';
 
 const Post = lazy(() => import('./Post'));
 
+// --- New Component: Updates Browser Tab Title ---
+const TitleHandler = () => {
+  const location = useLocation();
+
+  useEffect(() => {
+    // 1. Get the current slug (remove the leading slash)
+    const currentSlug = location.pathname.replace(/^\//, '');
+
+    // 2. Find the matching post
+    const post = getAllPosts().find((p) => p.slug === currentSlug);
+
+    // 3. Update the document title
+    if (post) {
+      document.title = `Vincent Liu — ${post.title}`;
+    } else {
+      document.title = 'Vincent Liu'; // Default title for Home or 404
+    }
+  }, [location]);
+
+  return null;
+};
+
 const RedirectHandler = () => {
   const location = useLocation();
   useEffect(() => {
@@ -28,7 +50,6 @@ const Layout = ({ children }) => (
     <main>{children}</main>
     <footer className="footer-section">
       <div className="flex gap-4 mb-4">
-        {/* Your social links remain unchanged */}
         <ExternalLink href="https://twitter.com/vincentjliu" className="decoration-transparent">
           <svg className="social-svg" fill="currentColor" viewBox="0 0 24 24">
             <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
@@ -51,8 +72,6 @@ const Layout = ({ children }) => (
 );
 
 const Home = () => {
-  // 3. This continues to work perfectly because your new loader.js
-  // eagerly loads the metadata (title, date, description) for this page.
   const posts = getAllPosts().sort((a, b) => (b.order || 0) - (a.order || 0));
   
   return (
@@ -93,9 +112,9 @@ const Home = () => {
 export default function App() {
   return (
     <BrowserRouter>
+      <TitleHandler /> 
       <RedirectHandler />
       <Layout>
-        {/* 4. Suspense ensures the app doesn't crash while fetching 'Post.jsx' */}
         <Suspense fallback={<div className="py-20 text-center text-stone-500">Loading...</div>}>
           <Routes>
             <Route path="/" element={<Home />} />

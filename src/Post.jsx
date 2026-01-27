@@ -3,15 +3,13 @@ import { useParams } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import rehypeRaw from 'rehype-raw';
 import remarkGfm from 'remark-gfm';
-import { getPostContent, getAllPosts } from './loader'; // Import getAllPosts to look up title
+import { getPostContent, getAllPosts } from './loader'; 
 
 const Post = () => {
   const { slug } = useParams();
   const [postContent, setPostContent] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Get metadata synchronously for the header (Title, Date, Authors)
-  // This is fast because it's already in the main bundle.
   const meta = getAllPosts().find(p => p.slug === slug);
 
   useEffect(() => {
@@ -19,8 +17,6 @@ const Post = () => {
       setLoading(true);
       try {
         const data = await getPostContent(slug);
-        // Remove the YAML frontmatter (the stuff between --- and --- at the top)
-        // This regex matches the first block starting and ending with ---
         const cleanContent = data.content.replace(/^---[\s\S]*?---\n/, '');
         setPostContent(cleanContent);
       } catch (error) {
@@ -41,7 +37,10 @@ const Post = () => {
   return (
     <article className="animate-in fade-in duration-700">
       <header className="mb-12 border-b border-stone-100 pb-8">
-        <h1 className="text-2xl font-serif font-semibold leading-tight tracking-wide mb-4">{meta.title}</h1>
+        {/* Added 'lowercase' to the className below */}
+        <h1 className="text-2xl font-serif font-semibold leading-tight tracking-wide mb-4 lowercase">
+          {meta.title}
+        </h1>
         <div className="flex-wrap items-center gap-x-4 gap-y-2 text-stone-400">
           <div className="items-center gap-2 mb-2">
             <div className="gap-2">
