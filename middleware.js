@@ -26,7 +26,7 @@ export default async function middleware(req) {
 
   // 2. Setup Defaults
   let finalTitle = 'Vincent Liu';
-  let finalThumbnail = 'https://vliu15.github.io/profile.png';
+  let finalThumbnail = 'https://vliu15.github.io/logo.png';
 
   if (slug) {
     // --- Title Logic ---
