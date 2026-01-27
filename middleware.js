@@ -14,6 +14,11 @@ const customThumbnails = {
   'the-human-company': null, 
 };
 
+const customDescriptions = {
+  'the-robotics-data-pareto-frontier': 'The defining narrative of robotics in 2025 was not a new model architecture, but an enthusiasm for data. Despite a consensus around teleoperation as the gold standard, interest blossomed in the data and training recipes that transcend it. This appetite defined a new market category and spurred the creation of innumerable data collection startups aiming to address the heterogeneous robotics data problem. At the intersection of data companies and robotics research lies a recurring theme: human data. In just the last month, the industry’s largest players—whose initial hypotheses were staked on either hardware, teleoperation, or simulation—have all announced breakthroughs in learning from human data.',
+  'the-human-company': 'We exist at a precipice in human history. The last decade has seen the birth of a new class of intelligence that rivals our own cognitive capabilities as humans. One of the greatest promises of artificial general intelligence is its potential to reason about and automate tasks in the physical world, and this future of general-purpose robotics is now within reach. Our mission is to accelerate this path to abundance.',
+};
+
 export default async function middleware(req) {
   const url = new URL(req.url);
   const slug = url.pathname.replace(/^\//, '');
@@ -33,19 +38,25 @@ export default async function middleware(req) {
     if (!postTitle) {
       postTitle = slug.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
     }
-    finalTitle = `\u200BVincent Liu ― ${postTitle}`;
+    finalTitle = `${postTitle} ― Vincent Liu`;
 
     // --- Thumbnail Logic ---
     if (Object.prototype.hasOwnProperty.call(customThumbnails, slug)) {
       finalThumbnail = customThumbnails[slug];
+    }
+
+    // --- New Description Logic ---
+    if (customDescriptions[slug]) {
+      finalDescription = customDescriptions[slug];
+      finalDescription = rawDesc.length > 160 
+            ? rawDesc.slice(0, 157) + '...' 
+            : rawDesc;
     }
   }
 
   const res = await fetch(`${url.origin}/index.html`);
   const html = await res.text();
 
-  // --- The Fix: Remove OLD tags first to avoid duplicates ---
-  // We use regex to wipe out any existing og:title, og:image, etc. from the template
   let newHtml = html
     .replace(/<title>.*?<\/title>/g, '') 
     .replace(/<meta property="og:title".*?>/g, '')
@@ -53,17 +64,16 @@ export default async function middleware(req) {
     .replace(/<meta property="og:image".*?>/g, '')
     .replace(/<meta name="twitter:card".*?>/g, '');
 
-  // --- Create conditional Image Tag ---
   const imageMetaTag = finalThumbnail 
     ? `<meta property="og:image" content="${finalThumbnail}" />` 
     : '';
 
-  // --- Inject NEW tags cleanly at the top of head ---
+  // 4. INJECT THE VARIABLE (${finalDescription}) instead of static text
   newHtml = newHtml.replace('<head>', `
     <head>
       <title>${finalTitle}</title>
       <meta property="og:title" content="${finalTitle}" />
-      <meta property="og:description" content="Read this post on my blog." />
+      <meta property="og:description" content="${finalDescription}" />
       ${imageMetaTag}
       <meta name="twitter:card" content="summary_large_image" />
   `);
