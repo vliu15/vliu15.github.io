@@ -29,13 +29,14 @@ export default async function middleware(req) {
   if (!isBot) return;
 
   // Defaults
+  let postTitle = 'Vincent Liu';
   let finalTitle = 'Vincent Liu';
   let finalThumbnail = 'https://vliu15.github.io/logo.png'; // Ensure this default image exists!
   let finalDescription = 'Vincent Liu\'s Personal Website.';
 
   if (slug) {
     // --- Title Logic ---
-    let postTitle = customTitles[slug];
+    postTitle = customTitles[slug];
     if (!postTitle) {
       postTitle = slug.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
     }
@@ -73,7 +74,7 @@ export default async function middleware(req) {
   newHtml = newHtml.replace('<head>', `
     <head>
       <title>${finalTitle}</title>
-      <meta property="og:title" content="${finalTitle}" />
+      <meta property="og:title" content="${postTitle}" />
       <meta property="og:description" content="${finalDescription}" />
       ${imageMetaTag}
       <meta name="twitter:card" content="summary_large_image" />
