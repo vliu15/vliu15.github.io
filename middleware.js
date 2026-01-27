@@ -7,11 +7,11 @@ export const config = {
 // Optional: Add specific titles here for perfect capitalization
 const customTitles = {
   'the-human-company': 'The Human Company',
-  'the-robotics-data-pareto-frontier': 'The Robots Data Pareto Frontier'
+  'the-robotics-data-pareto-frontier': 'The Robotics Data Pareto Frontier'
 };
 
 const customThumbnails = {
-    'the-robotics-data-pareto-frontier': 'https://vliu15.github.io/public/robotics_data_pareto_frontier-top.png',
+  'the-robotics-data-pareto-frontier': 'https://vliu15.github.io/robotics_data_pareto_frontier-top.png',
 }
 
 export default async function middleware(req) {
