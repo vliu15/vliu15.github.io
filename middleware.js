@@ -11,7 +11,6 @@ const customTitles = {
 
 const customThumbnails = {
   'the-robotics-data-pareto-frontier': 'https://vliu15.github.io/robotics_data_pareto_frontier-top.png',
-  // 1. Set the value to NULL to strictly disable the thumbnail for this slug
   'the-human-company': null, 
 };
 
@@ -24,9 +23,9 @@ export default async function middleware(req) {
 
   if (!isBot) return;
 
-  // 2. Setup Defaults
+  // Defaults
   let finalTitle = 'Vincent Liu';
-  let finalThumbnail = 'https://vliu15.github.io/logo.png';
+  let finalThumbnail = 'https://vliu15.github.io/logo.png'; // Ensure this default image exists!
 
   if (slug) {
     // --- Title Logic ---
@@ -36,34 +35,38 @@ export default async function middleware(req) {
     }
     finalTitle = `Vincent Liu — ${postTitle}`;
 
-    // --- Thumbnail Logic (Fixed) ---
-    // Check if the slug exists in your map
+    // --- Thumbnail Logic ---
     if (Object.prototype.hasOwnProperty.call(customThumbnails, slug)) {
-      // If found, override the default (even if it is null)
       finalThumbnail = customThumbnails[slug];
     }
   }
 
-  // 3. Fetch HTML
   const res = await fetch(`${url.origin}/index.html`);
   const html = await res.text();
 
-  // 4. Create the Image Tag Conditionally
-  // If finalThumbnail is null, we generate an empty string so no tag is rendered
+  // --- The Fix: Remove OLD tags first to avoid duplicates ---
+  // We use regex to wipe out any existing og:title, og:image, etc. from the template
+  let newHtml = html
+    .replace(/<title>.*?<\/title>/g, '') 
+    .replace(/<meta property="og:title".*?>/g, '')
+    .replace(/<meta property="og:description".*?>/g, '')
+    .replace(/<meta property="og:image".*?>/g, '')
+    .replace(/<meta name="twitter:card".*?>/g, '');
+
+  // --- Create conditional Image Tag ---
   const imageMetaTag = finalThumbnail 
     ? `<meta property="og:image" content="${finalThumbnail}" />` 
     : '';
 
-  // 5. Inject
-  const newHtml = html
-    .replace('<title>Vite App</title>', `<title>${finalTitle}</title>`)
-    .replace('<title>Vincent Liu</title>', `<title>${finalTitle}</title>`)
-    .replace('</head>', `
+  // --- Inject NEW tags cleanly at the top of head ---
+  newHtml = newHtml.replace('<head>', `
+    <head>
+      <title>${finalTitle}</title>
       <meta property="og:title" content="${finalTitle}" />
       <meta property="og:description" content="Read this post on my blog." />
-      ${imageMetaTag} 
-      <meta name="twitter:card" content="summary" />
-    </head>`);
+      ${imageMetaTag}
+      <meta name="twitter:card" content="summary_large_image" />
+  `);
 
   return new Response(newHtml, {
     headers: { 'content-type': 'text/html; charset=UTF-8' },
