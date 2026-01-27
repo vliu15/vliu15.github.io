@@ -33,7 +33,7 @@ export default async function middleware(req) {
     if (!postTitle) {
       postTitle = slug.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
     }
-    finalTitle = `Vincent Liu — ${postTitle}`;
+    finalTitle = `\u200BVincent Liu — ${postTitle}`;
 
     // --- Thumbnail Logic ---
     if (Object.prototype.hasOwnProperty.call(customThumbnails, slug)) {
