@@ -6,8 +6,13 @@ export const config = {
 
 // Optional: Add specific titles here for perfect capitalization
 const customTitles = {
-  'future-of-ai': 'The Future of AI',
+  'the-human-company': 'The Human Company',
+  'the-robotics-data-pareto-frontier': 'The Robots Data Pareto Frontier'
 };
+
+const customThumbnails = {
+    'the-robotics-data-pareto-frontier': 'https://vliu15.github.io/public/robotics_data_pareto_frontier-top.png',
+}
 
 export default async function middleware(req) {
   const url = new URL(req.url);
@@ -20,7 +25,8 @@ export default async function middleware(req) {
   if (!isBot) return;
 
   // 2. Determine the Title
-  let finalTitle = 'Vincent Liu'; // Default for Homepage
+  let finalTitle = 'Vincent Liu';  // Default for Homepage
+  let finalThumbnail = 'https://vliu15.github.io/profile.png'
 
   // If there IS a slug, it's a blog post -> Use the dynamic format
   if (slug) {
@@ -34,6 +40,11 @@ export default async function middleware(req) {
     }
     
     finalTitle = `Vincent Liu — ${postTitle}`;
+
+    let postThumbnail = customThumbnails[slug];
+    if (!postThumbnail) {
+      finalThumbnail = postThumbnail;
+    }
   }
 
   // 3. Fetch the HTML template
@@ -49,7 +60,7 @@ export default async function middleware(req) {
     .replace('</head>', `
       <meta property="og:title" content="${finalTitle}" />
       <meta property="og:description" content="Read this post on my blog." />
-      <meta property="og:image" content="https://vliu15.github.io/profile.png" />
+      <meta property="og:image" content="${finalThumbnail}" />
       <meta name="twitter:card" content="summary" />
     </head>`);
 
