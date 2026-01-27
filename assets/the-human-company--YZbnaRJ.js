@@ -1,5 +1,5 @@
 const e=`---
-title: the human company
+title: The Human Company
 date: June 2025
 order: 1
 author: Vincent Liu, Ademi Adeniji

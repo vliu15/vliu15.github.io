@@ -1,5 +1,5 @@
 const e=`---
-title: the robotics data pareto frontier
+title: The Robotics Data Pareto Frontier
 date: January 2026
 order: 2
 author: Vincent Liu
