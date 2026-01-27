@@ -89,11 +89,11 @@ const Home = () => {
           {posts.map((post) => (
             <div key={post.slug} className="flex flex-col">
               {post.unreleased ? (
-                <h3 className="text-xl font-serif font-medium mb-2 text-stone-400">
+                <h3 className="text-xl font-serif font-medium mb-2 text-stone-400 lowercase">
                   {post.title}
                 </h3>
               ) : (
-                <Link to={`/${post.slug}`} className="w-fit group no-underline">
+                <Link to={`/${post.slug}`} className="w-fit group no-underline lowercase">
                   <h3 className="post-entry-title">{post.title}</h3>
                 </Link>
               )}
