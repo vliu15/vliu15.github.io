@@ -1,25 +1,21 @@
-// Use eager: true to ensure files are loaded at build time
+// Metadata + parsed content, eager (build-time)
 const modules = import.meta.glob('./posts/*.md', { eager: true });
+// Raw markdown strings, eager (build-time) — this is the key addition
+const rawModules = import.meta.glob('./posts/*.md', { eager: true, query: '?raw', import: 'default' });
+
+const slugFromPath = (path) => path.split('/').pop().replace('.md', '');
 
 export const getAllPosts = () => {
-  return Object.keys(modules).map((path) => {
-    const slug = path.split('/').pop().replace('.md', '');
-    const post = modules[path];
-    return {
-      slug,
-      ...post.attributes,
-    };
-  }).sort((a, b) => new Date(b.date) - new Date(a.date));
+  return Object.keys(modules).map((path) => ({
+    slug: slugFromPath(path),
+    ...modules[path].attributes,
+  })).sort((a, b) => new Date(b.date) - new Date(a.date));
 };
 
-// The '?raw' query makes this a "different" module to Rollup, 
-// so it gets its own chunk!
-export const getPostContent = async (slug) => {
-  const module = await import(`./posts/${slug}.md?raw`);
-  return {
-    // We don't need attributes here (we already have them from the route/params if needed),
-    // but we can pass the raw string to be cleaned up.
-    content: module.default // ?raw imports export the string as 'default'
-  };
+// Now synchronous — no await, no client-only import
+export const getPostContent = (slug) => {
+  const entry = Object.keys(rawModules).find((p) => slugFromPath(p) === slug);
+  if (!entry) return null;
+  const raw = rawModules[entry];
+  return raw.replace(/^---[\s\S]*?---\n/, ''); // strip frontmatter
 };
-

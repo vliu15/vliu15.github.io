@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://vincentliu.org/sitemap.xml

@@ -1,28 +1,14 @@
-import { BrowserRouter, Routes, Route, Link, useLocation } from 'react-router-dom';
-import { useEffect, lazy, Suspense } from 'react';
+import { Link, useLocation, Outlet } from 'react-router-dom';
+import { useEffect } from 'react';
 import { getAllPosts } from './loader';
 
-const Post = lazy(() => import('./Post'));
-
-// --- New Component: Updates Browser Tab Title ---
 const TitleHandler = () => {
   const location = useLocation();
-
   useEffect(() => {
-    // 1. Get the current slug (remove the leading slash)
     const currentSlug = location.pathname.replace(/^\//, '');
-
-    // 2. Find the matching post
     const post = getAllPosts().find((p) => p.slug === currentSlug);
-
-    // 3. Update the document title
-    if (post) {
-      document.title = `Vincent Liu — ${post.title}`;
-    } else {
-      document.title = 'Vincent Liu'; // Default title for Home or 404
-    }
+    document.title = post ? `Vincent Liu — ${post.title}` : 'Vincent Liu';
   }, [location]);
-
   return null;
 };
 
@@ -42,12 +28,14 @@ const ExternalLink = ({ href, children, className = "" }) => (
   </a>
 );
 
-const Layout = ({ children }) => (
+export const Layout = () => (
   <div className="app-container">
+    <TitleHandler />
+    <RedirectHandler />
     <nav className="mb-16">
       <Link to="/" className="nav-brand" title="home" aria-label="home">«</Link>
     </nav>
-    <main>{children}</main>
+    <main><Outlet /></main>
     <footer className="footer-section">
       <div className="flex gap-4 mb-4">
         <ExternalLink href="https://twitter.com/vincentjliu" className="decoration-transparent">
@@ -71,9 +59,8 @@ const Layout = ({ children }) => (
   </div>
 );
 
-const Home = () => {
+export const Home = () => {
   const posts = getAllPosts().sort((a, b) => (b.order || 0) - (a.order || 0));
-  
   return (
     <div className="space-y-20">
       <header className="items-center">
@@ -108,20 +95,3 @@ const Home = () => {
     </div>
   );
 };
-
-export default function App() {
-  return (
-    <BrowserRouter>
-      <TitleHandler /> 
-      <RedirectHandler />
-      <Layout>
-        <Suspense fallback={<div className="py-20 text-center text-stone-500">Loading...</div>}>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/:slug" element={<Post />} />
-          </Routes>
-        </Suspense>
-      </Layout>
-    </BrowserRouter>
-  );
-}
