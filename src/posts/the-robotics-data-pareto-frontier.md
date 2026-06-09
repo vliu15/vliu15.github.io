@@ -5,6 +5,7 @@ order: 2
 author: Vincent Liu
 description: On the emergence of human data in robotics (part 1)
 unreleased: false
+thumbnail: https://vincentliu.org/robotics_data_pareto_frontier-top.png
 ---
 
 <figure id="fig-top">

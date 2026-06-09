@@ -1,4 +1,5 @@
 import { Link, useLocation, Outlet } from 'react-router-dom';
+import { Head } from 'vite-react-ssg';
 import { useEffect } from 'react';
 import { getAllPosts } from './loader';
 
@@ -63,6 +64,13 @@ export const Home = () => {
   const posts = getAllPosts().sort((a, b) => (b.order || 0) - (a.order || 0));
   return (
     <div className="space-y-20">
+      <Head>
+        <title>Vincent Liu</title>
+        <meta name="description" content="Vincent Liu — cofounder at Grounded Superintelligence, a robotics startup scaling robot learning from real-world human data." />
+        <meta property="og:title" content="Vincent Liu" />
+        <meta property="og:description" content="Vincent Liu — cofounder at Grounded Superintelligence, a robotics startup scaling robot learning from real-world human data." />
+        <meta name="twitter:card" content="summary_large_image" />
+      </Head>
       <header className="items-center">
         <img src="/profile.png" alt="Profile" className="profile-image" />
         <div>
