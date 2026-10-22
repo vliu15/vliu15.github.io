@@ -12,9 +12,13 @@
   @apply bg-[#fbf9f7] text-theme-dark antialiased;
 }
 
+/* Wrap paragraphs without one-word last lines, and headings into even lines */
+p { text-wrap: pretty; }
+h1, h2, h3 { text-wrap: balance; }
+
 /* Layout & Containers */
 .app-container {
-  @apply max-w-3xl mx-auto px-6 py-20 min-h-screen font-sans;
+  @apply max-w-[39rem] mx-auto px-6 py-20 min-h-screen font-sans;
 }
 
 .nav-brand {
@@ -22,20 +26,17 @@
 }
 
 .footer-section {
-  @apply mt-16 pt-8 border-t border-stone-100;
+  @apply mt-24;
 }
 
 .copyright-text {
-  @apply text-stone-400 text-[10px] tracking-widest font-medium;
+  @apply text-xs;
 }
 
 /* Typography & Links */
-.link-external {
-  @apply underline decoration-stone-300 underline-offset-2 decoration-1 hover:decoration-stone-700 ;
-}
-
-.metadata-text {
-  @apply text-xs !text-stone-500 font-light tracking-wider;
+.link-external, .prose a {
+  @apply underline underline-offset-3 decoration-1 hover:text-theme-dark;
+  color: var(--color-theme-highlight);
 }
 
 /* Components */
@@ -44,21 +45,19 @@
 }
 
 .post-entry-title {
-  @apply text-xl font-serif font-medium mb-2 decoration-stone-300 underline decoration-1 group-hover:decoration-stone-700 underline-offset-6;
+  @apply text-[16px] font-serif font-semibold leading-snug mb-1 decoration-1 underline-offset-4 group-hover:underline;
 }
 
 .social-svg {
-  @apply w-6 h-6 text-stone-400 hover:text-theme-dark ;
+  @apply block w-3.5 h-3.5 text-stone-400 hover:text-theme-dark ;
 }
 
 /* Markdown Styling (Preserved exactly) */
 .prose { @apply text-theme-dark; line-height: 1.5; }
-.prose h1 { @apply text-[20pt] font-serif font-semibold mt-6 mb-4; }
-.prose h2 { @apply text-sm font-serif font-semibold mt-5 mb-3; }
-.prose h3 { @apply text-sm font-sans mb-4 font-extrabold tracking-wide; }
-.prose p { @apply text-sm font-sans mb-4; }
-.prose strong { @apply text-sm font-sans mb-4 font-semibold; }
-.prose a { @apply text-stone-500 underline underline-offset-4 hover:text-theme-dark ; color: var(--color-theme-highlight); }
+.prose h1 { @apply text-2xl font-serif font-semibold leading-tight mt-10 mb-3; }
+.prose h2, .prose h3 { @apply text-sm font-sans font-semibold leading-snug mt-10 mb-3; }
+.prose p { @apply text-sm font-sans leading-normal mb-4; }
+.prose strong { @apply font-semibold; }
 
 /* Better spacing for the figure container */
 .prose figure { 
@@ -71,27 +70,29 @@
   /* No need for px-4 if container has padding, but keeps it safe on narrow screens */
 }
 
-/* The Caption: Match body text exactly, just italicize and center */
+/* The Caption: Match body text, muted and centered */
 .prose figcaption { 
-  @apply text-sm font-sans italic text-center text-[#78716c] max-w-prose;
+  @apply text-xs font-sans text-center leading-normal w-full;
 }
 
 /* Footnotes (Preserved exactly) */
 #footnote-label {
   display: block !important;
   visibility: visible !important;
-  @apply text-sm font-sans font-semibold mt-8 text-theme-dark;
+  @apply text-sm font-sans font-semibold leading-snug mt-10 mb-3 text-theme-dark;
   height: auto;
 }
 
+.prose section[data-footnotes] { @apply mt-16; }
 .prose section[data-footnotes] ol { @apply list-none p-0 m-0; counter-reset: footnote-counter; }
 .prose section[data-footnotes] li {
-  @apply relative pl-5 mb-1 text-[10pt] text-stone-500 leading-snug;
+  @apply relative pl-5 mb-1 text-xs leading-normal;
   counter-increment: footnote-counter;
 }
+.prose section[data-footnotes] li p { @apply text-xs leading-normal mb-0; }
 .prose section[data-footnotes] li::before {
   content: counter(footnote-counter);
-  @apply absolute left-0 top-0 font-sans font-medium text-theme-highlight text-[7pt];
+  @apply absolute left-0 top-0 font-sans font-medium text-theme-dark text-[10px];
 }
 
 @media print {

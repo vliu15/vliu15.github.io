@@ -37,16 +37,12 @@ export const Layout = () => (
       <Link to="/" className="nav-brand" title="home" aria-label="home">«</Link>
     </nav>
     <main><Outlet /></main>
-    <footer className="footer-section">
-      <div className="flex gap-4 mb-4">
+    <footer className="footer-section flex items-center justify-between">
+      <div className="copyright-text">© {new Date().getFullYear()} Vincent Liu</div>
+      <div className="flex items-center gap-3">
         <ExternalLink href="https://twitter.com/vincentjliu" className="decoration-transparent">
           <svg className="social-svg" fill="currentColor" viewBox="0 0 24 24">
             <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-          </svg>
-        </ExternalLink>
-        <ExternalLink href="https://scholar.google.com/citations?user=TY0sFqgAAAAJ" className="decoration-transparent">
-          <svg className="social-svg" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M12 24a7 7 0 0 1-7-7c0-2.58 1.41-4.93 3.61-6.16L5.05 7.11 12 1 18.95 7.11l-3.56 3.73C17.59 12.07 19 14.42 19 17a7 7 0 0 1-7 7zm0-12a5 5 0 1 0 0 10 5 5 0 0 0 0-10z" />
           </svg>
         </ExternalLink>
         <ExternalLink href="mailto:vincent.liu15@gmail.com" className="decoration-transparent">
@@ -55,7 +51,6 @@ export const Layout = () => (
           </svg>
         </ExternalLink>
       </div>
-      <div className="copyright-text">© {new Date().getFullYear()} Vincent Liu</div>
     </footer>
   </div>
 );
@@ -66,36 +61,38 @@ export const Home = () => {
     <div className="space-y-20">
       <Head>
         <title>Vincent Liu</title>
-        <meta name="description" content="Vincent Liu — cofounder at Grounded Superintelligence, a robotics startup scaling robot learning from real-world human data." />
-        <meta property="og:title" content="Vincent Liu" />
-        <meta property="og:description" content="Vincent Liu — cofounder at Grounded Superintelligence, a robotics startup scaling robot learning from real-world human data." />
+        <meta name="description" content="Vincent Liu - cofounder at GSI " />
+        <meta property="og:title" content="Vincent Liu - cofounder at GSI" />
+        <meta property="og:description" content="Vincent Liu" />
         <meta name="twitter:card" content="summary_large_image" />
       </Head>
       <header className="items-center">
         <img src="/profile.png" alt="Profile" className="profile-image" />
         <div>
-          <h1 className="text-xl font-semibold font-serif tracking-wide mb-4">Vincent Liu</h1>
-          <p className="text-sm mb-4">I'm a cofounder at <ExternalLink href="https://gsi.company">Grounded Superintelligence</ExternalLink>, a robotics startup focused on scaling robot learning from real-world human data. I'm interested in creating the systems that support AI. In a past life, I trained as <ExternalLink href="https://youtu.be/nvZtGpNVB0Y?si=2LtaTx5bsVWjvHlR">a concert pianist</ExternalLink>.</p>
-          <p className="text-sm mb-4">I studied Mathematics at Stanford. As an undergraduate, I was on <ExternalLink href="https://www.tesla.com/fsd">Andrej Karpathy's AI Team</ExternalLink> at Tesla and helped create <ExternalLink href="https://cs236g.stanford.edu">Stanford's PhD GANs class</ExternalLink>. I was later a founding researcher at <ExternalLink href="https://www.theinformation.com/briefings/exclusive-google-acquires-3d-image-generator-startup">CSM, acquired by Google DeepMind</ExternalLink>. My AI research has spanned robotics, 3D, speech, NLP, computer vision, reinforcement learning, and self-supervised learning.</p>
+          <h1 className="text-2xl font-serif font-semibold mb-4">Vincent Liu</h1>
+          <p className="text-sm leading-normal mb-4">I'm a cofounder at <ExternalLink href="https://gsi.company">GSI</ExternalLink>, a startup focused on scaling physical intelligence grounded in real-world human data. More broadly, I think about how hardware will change our interactions with AI, and who will build it. In a past life, I trained as <ExternalLink href="https://youtu.be/nvZtGpNVB0Y?si=2LtaTx5bsVWjvHlR">a concert pianist</ExternalLink>.</p>
+          <p className="text-sm leading-normal mb-4">I studied Mathematics at Stanford. As an undergraduate, I researched speech models at NVIDIA, worked on Andrej Karpathy's AI team at Tesla, and helped create <ExternalLink href="https://cs236g.stanford.edu">Stanford's PhD GANs class</ExternalLink>. Later, I was a researcher at CSM (acquired by Google DeepMind in 2026), building 3D foundation models.</p>
         </div>
       </header>
       <section>
-        <div className="space-y-12">
+        <div className="space-y-8">
           {posts.map((post) => (
             <div key={post.slug} className="flex flex-col">
               {post.unreleased ? (
-                <h3 className="text-xl font-serif font-medium mb-2 text-stone-400 lowercase">
+                <h3 className="text-[16px] font-serif font-semibold leading-snug mb-1 text-stone-400">
                   {post.title}
                 </h3>
               ) : (
-                <Link to={`/${post.slug}`} className="w-fit group no-underline lowercase">
-                  <h3 className="post-entry-title">{post.title}</h3>
+                <Link to={`/${post.slug}`} className="w-fit group no-underline">
+                  <h3 className="post-entry-title">
+                    {post.title}
+                    <span aria-hidden="true" className="inline-block ml-1.5 font-sans font-normal">→</span>
+                  </h3>
                 </Link>
               )}
-              <p className="text-sm !text-stone-500 italic mb-1 leading-relaxed">{post.description}</p>
-              <span className="metadata-text">
-                {post.unreleased ? `${post.date} (unreleased)` : post.date}
-              </span>
+              <p className="text-xs !text-stone-500 leading-normal">
+                {post.date} · {post.description}
+              </p>
             </div>
           ))}
         </div>

@@ -3,7 +3,7 @@ title: The Robotics Data Pareto Frontier
 date: January 2026
 order: 2
 author: Vincent Liu
-description: On the emergence of human data in robotics (part 1)
+description: A simple framing for why ego data is inevitable in robotics
 unreleased: false
 thumbnail: https://vincentliu.org/robotics_data_pareto_frontier-top.png
 ---
@@ -44,7 +44,7 @@ The solution, therefore, is not about a perfect data source, but about how to bu
 
 Our focus is shifting from the pursuit of a perfect data source toward building systems capable of learning across the entire curve. Success lies in designing for human adoption and improving hardware to push the Pareto Frontier.
 
-*I thank my good friends and peers Ademi Adeniji, Jupi Parmar, Ben Bolte, and Kartik Bhat for early feedback on this essay.*
+*I thank Ademi Adeniji, Jupi Parmar, Ben Bolte, and Kartik Bhat for early feedback on this essay.*
 
 [^1]: 1X. [1X World Model | From Video to Action: A New Way Robots Learn](https://www.1x.tech/discover/world-model-self-learning).
 [^2]: Physical Intelligence. [Emergence of Human to Robot Transfer in VLAs](https://www.pi.website/research/human_to_robot).
