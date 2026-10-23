@@ -1,5 +1,8 @@
 import { ViteReactSSG } from 'vite-react-ssg'
 import { routes, getRoutesToPrerender } from './routes'
+import '@fontsource-variable/work-sans/wght.css'
+import '@fontsource-variable/work-sans/wght-italic.css'
+import '@fontsource/playfair-display/600.css'
 import './index.css'
 
 export const createRoot = ViteReactSSG({ routes })

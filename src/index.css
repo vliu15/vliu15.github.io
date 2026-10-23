@@ -2,7 +2,7 @@
 
 @theme {
   --font-serif: "Playfair Display", serif;
-  --font-sans: "Work Sans", sans-serif;
+  --font-sans: "Work Sans Variable", "Work Sans", sans-serif;
   --color-theme-dark: #3B2F2F;
   --color-theme-highlight: #2F6B4F;
 }

@@ -2,6 +2,8 @@ import { Link, useLocation, useNavigationType, Outlet } from 'react-router-dom';
 import { Head } from 'vite-react-ssg';
 import { useEffect } from 'react';
 import { getAllPosts } from './loader';
+import workSansUrl from '@fontsource-variable/work-sans/files/work-sans-latin-wght-normal.woff2?url';
+import playfairUrl from '@fontsource/playfair-display/files/playfair-display-latin-600-normal.woff2?url';
 
 const TitleHandler = () => {
   const location = useLocation();
@@ -41,6 +43,11 @@ const ExternalLink = ({ href, children, className = "" }) => (
 
 export const Layout = () => (
   <div className="app-container">
+    {/* Start downloading the fonts every page uses before the CSS is parsed */}
+    <Head>
+      <link rel="preload" href={workSansUrl} as="font" type="font/woff2" crossOrigin="anonymous" />
+      <link rel="preload" href={playfairUrl} as="font" type="font/woff2" crossOrigin="anonymous" />
+    </Head>
     <TitleHandler />
     <ScrollToTop />
     <RedirectHandler />
