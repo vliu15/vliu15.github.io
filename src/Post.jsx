@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Head } from 'vite-react-ssg';
 import ReactMarkdown from 'react-markdown';
@@ -34,8 +34,35 @@ const useActiveSection = (sections) => {
   return active;
 };
 
+// Defined once so ReactMarkdown doesn't remount images and headings on every render.
+const remarkPlugins = [remarkGfm];
+const rehypePlugins = [rehypeRaw];
+const markdownComponents = {
+  img: ({ node, ...props }) => (
+    <img {...props} style={{ maxWidth: '100%', height: 'auto' }} />
+  ),
+  h2: ({ node, ...props }) => {
+    if (props.id === 'footnote-label') return <h2 {...props}>Footnotes</h2>;
+    return <h2 {...props} />;
+  },
+  h3: ({ node, children, ...props }) => (
+    <h3 {...props} id={slugify(stripMarkdown(textOf(children)))} className="scroll-mt-16">
+      {children}
+    </h3>
+  ),
+};
+
 // Sticky section list to the left of the article on wide screens, with an accent bar that slides to the active item.
-const TableOfContents = ({ items, active }) => {
+// It tracks the active section itself so scrolling re-renders only this list, not the whole article.
+const TableOfContents = ({ title, sections }) => {
+  const active = useActiveSection(sections);
+  const items = useMemo(
+    () => [
+      { id: TITLE_ID, label: title, onSelect: () => window.scrollTo({ top: 0, behavior: 'smooth' }) },
+      ...sections.map((s) => ({ ...s, onSelect: () => document.getElementById(s.id)?.scrollIntoView({ behavior: 'smooth' }) })),
+    ],
+    [title, sections],
+  );
   const listRef = useRef(null);
   const [bar, setBar] = useState(null);
   const activeIndex = items.findIndex((item) => item.id === active);
@@ -85,8 +112,7 @@ const Post = () => {
   const { slug } = useParams();
   const meta = getAllPosts().find((p) => p.slug === slug);
   const postContent = getPostContent(slug);
-  const [sections] = useState(() => getSections(postContent));
-  const active = useActiveSection(sections);
+  const sections = useMemo(() => getSections(postContent), [postContent]);
 
   if (!meta || meta.unreleased || !postContent) {
     return <div className="py-20 text-center">Post not found.</div>;
@@ -95,14 +121,10 @@ const Post = () => {
   const authors = meta.author ? meta.author.split(',').map((s) => s.trim()) : ['Vincent Liu'];
   const description = (meta.description || '').slice(0, 160);
   const pageTitle = `${meta.title} ― Vincent Liu`;
-  const tocItems = [
-    { id: TITLE_ID, label: meta.title, onSelect: () => window.scrollTo({ top: 0, behavior: 'smooth' }) },
-    ...sections.map((s) => ({ ...s, onSelect: () => document.getElementById(s.id)?.scrollIntoView({ behavior: 'smooth' }) })),
-  ];
 
   return (
     <article className="relative animate-in fade-in duration-700">
-      {sections.length > 0 && <TableOfContents items={tocItems} active={active} />}
+      {sections.length > 0 && <TableOfContents title={meta.title} sections={sections} />}
       <Head>
         <title>{pageTitle}</title>
         <meta name="description" content={description} />
@@ -122,24 +144,7 @@ const Post = () => {
       </header>
 
       <div className="prose">
-        <ReactMarkdown
-          remarkPlugins={[remarkGfm]}
-          rehypePlugins={[rehypeRaw]}
-          components={{
-            img: ({ node, ...props }) => (
-              <img {...props} style={{ maxWidth: '100%', height: 'auto' }} />
-            ),
-            h2: ({ node, ...props }) => {
-              if (props.id === 'footnote-label') return <h2 {...props}>Footnotes</h2>;
-              return <h2 {...props} />;
-            },
-            h3: ({ node, children, ...props }) => (
-              <h3 {...props} id={slugify(stripMarkdown(textOf(children)))} className="scroll-mt-16">
-                {children}
-              </h3>
-            ),
-          }}
-        >
+        <ReactMarkdown remarkPlugins={remarkPlugins} rehypePlugins={rehypePlugins} components={markdownComponents}>
           {postContent}
         </ReactMarkdown>
       </div>

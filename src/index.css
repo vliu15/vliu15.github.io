@@ -45,7 +45,7 @@ h1, h2, h3 { text-wrap: balance; }
 }
 
 .post-entry-title {
-  @apply text-[16px] font-serif font-semibold leading-snug mb-1 decoration-1 underline-offset-4 group-hover:underline;
+  @apply text-[17px] font-serif font-semibold leading-snug mb-1 decoration-1 underline-offset-4 group-hover:underline;
 }
 
 .social-svg {

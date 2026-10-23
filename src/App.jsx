@@ -1,4 +1,4 @@
-import { Link, useLocation, Outlet } from 'react-router-dom';
+import { Link, useLocation, useNavigationType, Outlet } from 'react-router-dom';
 import { Head } from 'vite-react-ssg';
 import { useEffect } from 'react';
 import { getAllPosts } from './loader';
@@ -10,6 +10,16 @@ const TitleHandler = () => {
     const post = getAllPosts().find((p) => p.slug === currentSlug);
     document.title = post ? `Vincent Liu — ${post.title}` : 'Vincent Liu';
   }, [location]);
+  return null;
+};
+
+// Start each newly opened page at the top; back/forward keeps the browser's saved position.
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+  const navigationType = useNavigationType();
+  useEffect(() => {
+    if (navigationType !== 'POP') window.scrollTo(0, 0);
+  }, [pathname, navigationType]);
   return null;
 };
 
@@ -32,6 +42,7 @@ const ExternalLink = ({ href, children, className = "" }) => (
 export const Layout = () => (
   <div className="app-container">
     <TitleHandler />
+    <ScrollToTop />
     <RedirectHandler />
     <nav className="mb-16">
       <Link to="/" className="nav-brand" title="home" aria-label="home">«</Link>
@@ -61,17 +72,17 @@ export const Home = () => {
     <div className="space-y-20">
       <Head>
         <title>Vincent Liu</title>
-        <meta name="description" content="Vincent Liu - cofounder at GSI " />
-        <meta property="og:title" content="Vincent Liu - cofounder at GSI" />
-        <meta property="og:description" content="Vincent Liu" />
+        <meta name="description" content="Cofounder at Grounded Superintelligence, scaling physical intelligence grounded in real-world human data." />
+        <meta property="og:title" content="Vincent Liu" />
+        <meta property="og:description" content="Cofounder at Grounded Superintelligence, scaling physical intelligence grounded in real-world human data." />
         <meta name="twitter:card" content="summary_large_image" />
       </Head>
       <header className="items-center">
         <img src="/profile.png" alt="Profile" className="profile-image" />
         <div>
           <h1 className="text-2xl font-serif font-semibold mb-4">Vincent Liu</h1>
-          <p className="text-sm leading-normal mb-4">I'm a cofounder at <ExternalLink href="https://gsi.company">GSI</ExternalLink>, a startup focused on scaling physical intelligence grounded in real-world human data. More broadly, I think about how hardware will change our interactions with AI, and who will build it. In a past life, I trained as <ExternalLink href="https://youtu.be/nvZtGpNVB0Y?si=2LtaTx5bsVWjvHlR">a concert pianist</ExternalLink>.</p>
-          <p className="text-sm leading-normal mb-4">I studied Mathematics at Stanford. As an undergraduate, I researched speech models at NVIDIA, worked on Andrej Karpathy's AI team at Tesla, and helped create <ExternalLink href="https://cs236g.stanford.edu">Stanford's PhD GANs class</ExternalLink>. Later, I was a researcher at CSM (acquired by Google DeepMind in 2026), building 3D foundation models.</p>
+          <p className="text-sm leading-normal mb-4">I'm a cofounder at <ExternalLink href="https://gsi.company">GSI</ExternalLink>, a startup focused on scaling physical intelligence grounded in real-world human data. More broadly, I think in concentric circles of systems, especially the outer ones: how hardware will change our interactions with AI, who will build it, and who will benefit from it.</p>
+          <p className="text-sm leading-normal mb-4">I studied Mathematics at Stanford. As an undergraduate, I researched speech models at NVIDIA, worked on Andrej Karpathy's AI team at Tesla, and helped create <ExternalLink href="https://cs236g.stanford.edu">Stanford's PhD GANs class</ExternalLink>. Later, I was a researcher at CSM (acquired by Google DeepMind in 2026), building 3D foundation models. In a past life, I trained as <ExternalLink href="https://youtu.be/nvZtGpNVB0Y?si=2LtaTx5bsVWjvHlR">a concert pianist</ExternalLink>.</p>
         </div>
       </header>
       <section>
@@ -79,7 +90,7 @@ export const Home = () => {
           {posts.map((post) => (
             <div key={post.slug} className="flex flex-col">
               {post.unreleased ? (
-                <h3 className="text-[16px] font-serif font-semibold leading-snug mb-1 text-stone-400">
+                <h3 className="text-[17px] font-serif font-semibold leading-snug mb-1 text-stone-400">
                   {post.title}
                 </h3>
               ) : (
@@ -90,7 +101,7 @@ export const Home = () => {
                   </h3>
                 </Link>
               )}
-              <p className="text-xs !text-stone-500 leading-normal">
+              <p className="text-sm !text-stone-500 leading-normal">
                 {post.date} · {post.description}
               </p>
             </div>
